@@ -1,4 +1,4 @@
-/* demo.js — sample messages (fictional companies) for the scanner and the training game. */
+/* Sample messages (fictional companies) for the scanner and the training game. */
 var SAMPLES = {
   'Bank phish': `From: "Northwind Bank Security" <alerts@northwlnd-bank.com>
 Reply-To: support-desk@mail-verify-center.top

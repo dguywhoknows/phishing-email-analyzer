@@ -1,4 +1,4 @@
-/* core.js — email parsing, link and domain analysis, punycode, header hops and risk scoring (pure, unit-tested). */
+/* Email parsing, link and domain analysis, punycode, header hops and risk scoring (pure, unit-tested). */
 
 var BRANDS = ['paypal', 'apple', 'microsoft', 'google', 'amazon', 'netflix', 'facebook', 'instagram', 'linkedin', 'dropbox', 'docusign', 'chase', 'wellsfargo', 'bankofamerica', 'rbc', 'td', 'scotiabank', 'fedex', 'ups', 'dhl', 'usps', 'canadapost', 'irs', 'cra', 'steam', 'coinbase', 'binance', 'adobe', 'office365', 'outlook', 'icloud', 'northwindbank'];
 var BAD_TLDS = ['zip', 'mov', 'top', 'xyz', 'click', 'country', 'gq', 'tk', 'ml', 'cf', 'ga', 'work', 'support', 'rest', 'cam', 'icu', 'buzz', 'loan'];

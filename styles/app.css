@@ -1,4 +1,4 @@
-:root { --accent: #0b7fab; }
+:root { --accent: #b23a2e; }
 #email { min-height: 520px; font-size: 12.5px; }
 .verdict { display: flex; gap: 18px; align-items: center; }
 .verdict .big { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
