@@ -1,0 +1,34 @@
+:root { --accent: #0b7fab; }
+#email { min-height: 520px; font-size: 12.5px; }
+.verdict { display: flex; gap: 18px; align-items: center; }
+.verdict .big { font-size: 24px; font-weight: 800; letter-spacing: -.02em; }
+.sig { display: grid; grid-template-columns: 52px minmax(0, 1fr); gap: 10px; padding: 8px 0; border-bottom: 1px solid var(--line); font-size: 14px; color: var(--text); }
+.sig:last-child { border-bottom: 0; }
+.sig .w { font: 700 12px var(--mono); text-align: center; border-radius: 6px; padding: 3px 0; color: #fff; align-self: start; }
+.sig .w.good { background: var(--good); }
+.sig .w.warn { background: var(--warn); }
+.sig .w.bad { background: var(--bad); }
+.body-view { white-space: pre-wrap; font-size: 14px; line-height: 1.6; max-height: 360px; overflow: auto; }
+mark { background: color-mix(in srgb, var(--bad) 22%, transparent); color: inherit; border-bottom: 2px solid var(--bad); padding: 0 1px; border-radius: 2px; }
+mark.u { background: color-mix(in srgb, var(--warn) 25%, transparent); border-bottom-color: var(--warn); }
+#links td { word-break: break-all; }
+.hop { display: grid; grid-template-columns: 28px minmax(0, 1fr) auto; gap: 12px; align-items: start; padding: 10px 0; border-bottom: 1px solid var(--line); font-size: 13px; }
+.hop:last-child { border-bottom: 0; }
+.hop .n { width: 26px; height: 26px; border-radius: 50%; background: var(--panel-2); border: 1px solid var(--line); display: grid; place-items: center; font: 600 12px var(--mono); }
+.hop .delay.slow { color: var(--warn); font-weight: 600; }
+.kv { display: grid; grid-template-columns: 140px minmax(0, 1fr); gap: 6px 12px; font-size: 13px; }
+.kv dt { color: var(--muted); }
+.kv dd { margin: 0; word-break: break-all; }
+.url-parts { font: 15px var(--mono); word-break: break-all; line-height: 1.8; }
+.url-parts span { padding: 2px 3px; border-radius: 4px; }
+.url-parts .p-scheme { color: var(--muted); }
+.url-parts .p-user { background: color-mix(in srgb, var(--bad) 22%, transparent); }
+.url-parts .p-sub { background: color-mix(in srgb, var(--warn) 20%, transparent); }
+.url-parts .p-rd { background: color-mix(in srgb, var(--accent) 25%, transparent); font-weight: 700; }
+.url-parts .p-path { color: var(--muted); }
+.mail-view { white-space: pre-wrap; font-size: 14px; line-height: 1.6; background: var(--panel-2); border-radius: 8px; padding: 14px; max-height: 420px; overflow: auto; }
+.train-actions { display: flex; gap: 10px; }
+.train-actions .btn { flex: 1; padding: 12px; font-size: 15px; }
+.chip { display: inline-flex; gap: 6px; align-items: center; padding: 3px 4px 3px 10px; border-radius: 999px; background: var(--panel-2); border: 1px solid var(--line); font: 12px var(--mono); }
+.chip button { border: 0; background: none; cursor: pointer; color: var(--muted); font-size: 14px; }
+.bd-row { display: grid; grid-template-columns: 90px minmax(0, 1fr) 40px; gap: 10px; align-items: center; padding: 4px 0; font-size: 13px; color: var(--text); }

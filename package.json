@@ -1,0 +1,16 @@
+{
+  "name": "phishing-email-analyzer",
+  "version": "2.0.0",
+  "private": true,
+  "description": "Paste a suspicious email and get local forensics (headers, links, lookalike domains, pressure language) plus an AI second opinion.",
+  "scripts": {
+    "start": "python -m http.server 8000",
+    "test": "node tests/run-node.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/dguywhoknows/phishing-email-analyzer.git"
+  },
+  "homepage": "https://dguywhoknows.github.io/phishing-email-analyzer/",
+  "license": "MIT"
+}
