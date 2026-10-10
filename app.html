@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en" data-gate="app">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Phish Scope</title>
+<meta name="description" content="Paste a suspicious email: local forensics (headers, links, lookalike domains, pressure language) plus an AI second opinion.">
+<meta name="app-repo" content="https://github.com/dguywhoknows/phishing-email-analyzer">
+<meta name="app-version" content="2.0.0">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b7fab'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Arial%2CHelvetica%2Csans-serif' font-weight='700' font-size='13' fill='white'%3EPS%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="styles/base.css">
+<link rel="stylesheet" href="styles/app.css">
+<script src="src/lib/config.js"></script>
+<script src="src/lib/auth.js"></script>
+</head>
+<body>
+<header class="topbar">
+  <div class="brand"><a class="logo-link" href="index.html" aria-label="Home page"><span class="logo" aria-hidden="true">PS</span></a><div><h1>Phish Scope</h1><p>Is this email trying to hook you?</p></div></div>
+  <nav class="topnav" data-nav aria-label="Pages"></nav>
+  <div class="top-actions"><a class="btn ghost sm" href="https://github.com/dguywhoknows/phishing-email-analyzer" target="_blank" rel="noopener">GitHub</a><span data-ai-badge></span></div>
+</header>
+<div class="page active" data-page="scan" data-title="Scan">
+<main class="grid cols-2">
+  <section class="card stack">
+    <div class="row between"><h2 style="margin:0">Email</h2><div class="row" id="samples"></div></div>
+    <p class="small muted" style="margin:0">Paste the whole message. Including the raw headers ("Show original" in Gmail) unlocks SPF/DKIM/DMARC checks. Nothing leaves your browser unless you ask the AI.</p>
+    <textarea id="email" spellcheck="false" class="mono"></textarea>
+    <div class="row"><button class="btn primary" id="scan">Scan</button><button class="btn" id="ai" disabled>AI second opinion</button><button class="btn ghost" id="report" disabled>Copy report</button><label class="btn ghost">Open .eml<input type="file" id="eml" accept=".eml,.txt,message/rfc822" hidden></label></div>
+  </section>
+  <section class="stack">
+    <div class="card verdict" id="verdict"><div class="empty">Paste an email and press Scan.</div></div>
+    <div class="card"><h2>Where the points come from</h2><div id="breakdown" class="muted small">—</div></div>
+    <div class="card"><h2>Signals</h2><div id="signals" class="muted small">—</div></div>
+    <div class="card"><h2>Links</h2><div id="links" class="table-wrap muted small">—</div></div>
+    <div class="card"><h2>Highlighted body</h2><div id="body" class="body-view">—</div></div>
+    <div class="card hidden" id="aiCard"><h2>AI second opinion</h2><div id="aiOut"></div></div>
+  </section>
+</main>
+</div>
+<div class="page" data-page="headers" data-title="Headers">
+<main class="stack">
+  <div class="card"><div class="row between"><h2 style="margin:0">Delivery path</h2><span class="small muted" id="hopSummary"></span></div><div id="hops"></div></div>
+  <div class="grid cols-2">
+    <div class="card"><h2>Authentication</h2><div id="authTable"></div></div>
+    <div class="card"><h2>Identity</h2><div id="identity"></div></div>
+  </div>
+  <div class="card"><h2>All headers</h2><div class="table-wrap" id="allHeaders" style="max-height:420px"></div></div>
+</main>
+</div>
+
+<div class="page" data-page="url" data-title="URL inspector">
+<main class="stack" style="max-width:980px">
+  <div class="card stack">
+    <div class="row"><input class="input grow mono" id="urlIn" placeholder="Paste a link to take apart, e.g. https://login.paypal.com.secure-check.xyz/?next=..." aria-label="URL"><button class="btn primary" id="urlGo">Inspect</button></div>
+    <div class="row small" id="urlSamples"><span class="muted">Try:</span></div>
+  </div>
+  <div id="urlOut"></div>
+</main>
+</div>
+
+<div class="page" data-page="training" data-title="Training">
+<main class="grid side">
+  <aside class="stack">
+    <div class="card stack"><h2 style="margin:0">Spot the phish</h2><p class="small muted" style="margin:0">Read each message and decide. You get the tell and the scanner's view after every answer.</p><div class="kpis" id="trainStats"></div><div class="row"><button class="btn" id="trainRestart">Restart</button><button class="btn ghost" id="trainGen">Generate a new one</button></div></div>
+    <div class="card"><h2>Your answers</h2><div id="trainLog" class="small"></div></div>
+  </aside>
+  <section class="stack" id="trainCard"></section>
+</main>
+</div>
+
+<div class="page" data-page="history" data-title="History">
+<main class="stack">
+  <div class="page-head"><div><h2>Scan history</h2><p id="histSummary"></p></div><div class="row"><button class="btn ghost" id="histCsv">Export CSV</button><button class="btn ghost danger" id="histClear">Clear</button></div></div>
+  <div class="card table-wrap" id="histTable"></div>
+  <div class="grid cols-2">
+    <div class="card stack"><h2 style="margin:0">Trusted domains</h2><p class="small muted" style="margin:0">Mail from these domains gets −20 unless SPF or DMARC fail.</p><form class="row" id="trustForm"><input class="input grow" id="trustIn" placeholder="example.com" aria-label="Trusted domain"><button class="btn" type="submit">Add</button></form><div id="trustList" class="row"></div></div>
+    <div class="card stack"><h2 style="margin:0">Blocked domains</h2><p class="small muted" style="margin:0">Mail or links from these domains get +40.</p><form class="row" id="blockForm"><input class="input grow" id="blockIn" placeholder="bad-domain.top" aria-label="Blocked domain"><button class="btn" type="submit">Add</button></form><div id="blockList" class="row"></div></div>
+  </div>
+</main>
+</div>
+
+<div class="page" data-page="settings" data-title="Settings"></div>
+<script src="src/lib/dom.js"></script>
+<script src="src/lib/ai.js"></script>
+<script src="src/lib/router.js"></script>
+<script src="src/lib/copilot.js"></script>
+<script src="src/core.js"></script>
+<script src="src/demo.js"></script>
+<script src="src/app.js"></script>
+</body>
+</html>

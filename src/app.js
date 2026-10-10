@@ -205,3 +205,18 @@ Router.on('training', () => deck.length || startTraining());
 $('#email').value = SAMPLES['Bank phish'];
 runScan($('#email').value, false);
 renderHistory();
+
+/* ================= AI command box ================= */
+Copilot.register({
+  context: () => `Scanned email: ${last ? `"${last.subject}" from ${last.from} (${last.fromDom}): ${last.verdict[1]}, risk ${last.score}/100. Signals: ${last.sig.filter((s) => s.w).map((s) => `${s.text} (${s.w > 0 ? '+' : ''}${s.w})`).join('; ')}. Links: ${last.links.map((l) => l.href).join(' ')}` : 'none'}. Trusted: ${lists.trusted.join(', ') || 'none'}. Blocked: ${lists.blocked.join(', ') || 'none'}.`,
+  actions: [
+    { name: 'scan_email', description: 'Scan an email the user pasted (or re-scan the one on screen)', params: { email: 'optional raw email text with headers' }, run: ({ email }) => { Router.go('scan'); if (email) $('#email').value = email; runScan($('#email').value); return `${last.verdict[1]}, risk ${last.score}/100`; } },
+    { name: 'second_opinion', description: 'Ask the AI analyst to read the scanned email and explain the verdict in plain words', params: {}, run: async () => { if (!last) throw new Error('Scan an email first'); Router.go('scan'); await second(); return $('#aiOut').innerText.slice(0, 800); } },
+    { name: 'trust_domain', description: 'Always trust (or block) mail from a domain', params: { domain: 'e.g. example-bank.com', list: 'trusted | blocked' }, run: ({ domain, list }) => { const k = list === 'blocked' ? 'blocked' : 'trusted'; addTo(k, regDomain(String(domain).toLowerCase().replace(/^https?:\/\//, '').replace(/\/.*$/, ''))); if (last) runScan($('#email').value, false); return `${domain} is ${k}`; } },
+    { name: 'untrust_domain', description: 'Remove a domain from both lists', params: { domain: 'domain' }, run: ({ domain }) => { ['trusted', 'blocked'].forEach((k) => (lists[k] = lists[k].filter((x) => x !== domain))); saveLists(); renderHistory(); return `Removed ${domain}`; } },
+    { name: 'inspect_url', description: 'Break down a URL: real owner, lookalikes, hidden redirects', params: { url: 'URL' }, run: ({ url }) => { $('#urlIn').value = url; Router.go('url'); inspect(); return $('#urlOut').innerText.slice(0, 600); } },
+    { name: 'practice_email', description: 'Open training with a new generated practice message', params: {}, run: async () => { Router.go('training'); if (!deck.length) startTraining(); await $('#trainGen').onclick({ currentTarget: $('#trainGen') }); return 'A new practice message is waiting'; } },
+    { name: 'scan_details', query: true, description: 'Look up every signal, link, header and authentication result of the scanned email', params: {}, run: () => (last ? JSON.stringify({ subject: last.subject, from: last.from, verdict: last.verdict[1], score: last.score, auth: last.auth, signals: last.sig, links: last.links.map((l) => ({ text: l.text, href: l.href, flags: l.flags })), replyTo: last.headers['reply-to'], returnPath: last.headers['return-path'] }) : 'No scan yet') },
+    { name: 'training_stats', query: true, description: 'Look up training accuracy and recent answers', params: {}, run: () => JSON.stringify({ answered: answers.length, correct: answers.filter((a) => a.ok).length, missedPhish: answers.filter((a) => !a.ok && a.answer === 'phish').length, recent: answers.slice(0, 10) }) },
+  ],
+});

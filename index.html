@@ -3,88 +3,81 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Phish Scope</title>
-<meta name="description" content="Paste a suspicious email: local forensics (headers, links, lookalike domains, pressure language) plus an AI second opinion.">
-<meta name="app-repo" content="https://github.com/dguywhoknows/phishing-email-analyzer">
-<meta name="app-version" content="2.0.0">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b7fab'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Arial%2CHelvetica%2Csans-serif' font-weight='700' font-size='13' fill='white'%3EPS%3C/text%3E%3C/svg%3E">
+<title>Phish Scope: Is this email trying to hook you?</title>
+<meta name="description" content="Paste a suspicious message for header forensics, link analysis and lookalike-domain detection, plus a plain-language verdict.">
+<meta property="og:title" content="Phish Scope">
+<meta property="og:description" content="Paste a suspicious message for header forensics, link analysis and lookalike-domain detection, plus a plain-language verdict.">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%230b7fab'/%3E%3Ctext x='16' y='21' text-anchor='middle' font-family='Arial,Helvetica,sans-serif' font-weight='700' font-size='13' fill='white'%3EPS%3C/text%3E%3C/svg%3E">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles/base.css">
-<link rel="stylesheet" href="styles/app.css">
+<link rel="stylesheet" href="styles/landing.css">
+<style>:root { --accent: #0b7fab; }</style>
 </head>
-<body>
-<header class="topbar">
-  <div class="brand"><span class="logo" aria-hidden="true">PS</span><div><h1>Phish Scope</h1><p>Is this email trying to hook you?</p></div></div>
-  <nav class="topnav" data-nav aria-label="Pages"></nav>
-  <div class="top-actions"><a class="btn ghost sm" href="https://github.com/dguywhoknows/phishing-email-analyzer" target="_blank" rel="noopener">GitHub</a><span data-ai-badge></span></div>
+<body class="landing">
+<header class="l-nav">
+  <a class="l-brand" href="#top"><span class="logo">PS</span><b>Phish Scope</b></a>
+  <nav aria-label="Sections"><a href="#demo">Demo</a><a href="#ask">Ask it</a><a href="#features">Features</a><a href="#faq">FAQ</a></nav>
+  <div class="l-nav-cta"><a class="btn primary" href="app.html">Open the app</a></div>
 </header>
-<div class="page active" data-page="scan" data-title="Scan">
-<main class="grid cols-2">
-  <section class="card stack">
-    <div class="row between"><h2 style="margin:0">Email</h2><div class="row" id="samples"></div></div>
-    <p class="small muted" style="margin:0">Paste the whole message. Including the raw headers ("Show original" in Gmail) unlocks SPF/DKIM/DMARC checks. Nothing leaves your browser unless you ask the AI.</p>
-    <textarea id="email" spellcheck="false" class="mono"></textarea>
-    <div class="row"><button class="btn primary" id="scan">Scan</button><button class="btn" id="ai" disabled>AI second opinion</button><button class="btn ghost" id="report" disabled>Copy report</button><label class="btn ghost">Open .eml<input type="file" id="eml" accept=".eml,.txt,message/rfc822" hidden></label></div>
+
+<main id="top">
+  <section class="l-hero">
+    <p class="l-kicker">Free · runs in your browser · AI built in</p>
+    <h1>Is this email trying to hook you?</h1>
+    <p class="l-sub">Paste a suspicious message for header forensics, link analysis and lookalike-domain detection, plus a plain-language verdict.</p>
+    <div class="l-actions"><a class="btn primary big" href="app.html">Open the app</a><a class="btn big" href="#demo">See it working</a></div>
   </section>
-  <section class="stack">
-    <div class="card verdict" id="verdict"><div class="empty">Paste an email and press Scan.</div></div>
-    <div class="card"><h2>Where the points come from</h2><div id="breakdown" class="muted small">—</div></div>
-    <div class="card"><h2>Signals</h2><div id="signals" class="muted small">—</div></div>
-    <div class="card"><h2>Links</h2><div id="links" class="table-wrap muted small">—</div></div>
-    <div class="card"><h2>Highlighted body</h2><div id="body" class="body-view">—</div></div>
-    <div class="card hidden" id="aiCard"><h2>AI second opinion</h2><div id="aiOut"></div></div>
+
+  <section class="l-demo reveal" id="demo">
+    <div class="l-window"><div class="l-window-bar"><i></i><i></i><i></i><span>Phish Scope</span></div>
+      <iframe src="app.html?embed=1" title="Phish Scope live demo" loading="lazy"></iframe></div>
+    <p class="l-caption">This is the real app running below, not a recording. Try it.</p>
+  </section>
+
+  <section class="l-section reveal" id="ask">
+    <div class="l-head"><p class="l-kicker">Just say what you want</p><h2>Tell it in plain words. It uses its own tools to do it.</h2>
+      <p>Open the AI box in the app, type a request, and the AI drives the app's real features for you: it sets things up, edits, runs and reports back. Standing instructions let you shape every AI feature to how you like to work.</p></div>
+    <div class="l-prompts"><div class="l-prompt"><div class="say">Is this one safe to click?</div><div class="does">Scans the pasted email and explains the verdict.</div></div><div class="l-prompt"><div class="say">Always trust mail from my bank, example-bank.com</div><div class="does">Adds the domain to your trusted list.</div></div><div class="l-prompt"><div class="say">Give me a harder practice email</div><div class="does">Opens the training game with a new message.</div></div></div>
+  </section>
+
+  <section class="l-section reveal" id="features">
+    <div class="l-head"><p class="l-kicker">What it does</p><h2>Everything in one place</h2></div>
+    <div class="l-grid"><div class="l-card"><h3>Raw header parsing</h3><p>Raw header parsing with folded-line support; SPF / DKIM / DMARC badge readout</p></div><div class="l-card"><h3>Sender checks</h3><p>Reply-To / Return-Path mismatch, display-name brand spoofing, free-webmail &#x27;executives&#x27;</p></div><div class="l-card"><h3>Link extraction</h3><p>Link extraction from HTML anchors, Markdown and bare URLs, with per-link flags</p></div><div class="l-card"><h3>Lookalike detection</h3><p>Levenshtein + homoglyph normalization against a brand list; brand-in-subdomain trick</p></div><div class="l-card"><h3>Social-engineering lexicon</h3><p>Social-engineering lexicon (urgency, credentials, money, threats, generic greetings) with in-body highlighting</p></div><div class="l-card"><h3>Transparent weighted scoring</h3><p>Transparent weighted scoring, so every point is explained</p></div><div class="l-card"><h3>AI second opinion</h3><p>Verdict, confidence, reasons, safe next steps</p></div><div class="l-card"><h3>Headers page</h3><p>Received-chain delivery path with per-hop delays, an SPF/DKIM/DMARC explainer, identity fields (Reply-To, Return-Path, Message-ID) and the full header table</p></div><div class="l-card"><h3>URL inspector page</h3><p>Colour-coded URL anatomy showing the domain that actually owns the site, punycode/IDN decoding, query parameters, hidden redirect targets and URL-level red flags</p></div></div>
+  </section>
+
+  <section class="l-section reveal">
+    <div class="l-head"><p class="l-kicker">How it works</p><h2>Real engines where it counts, AI where it helps</h2></div>
+    <div class="l-steps">
+      <div><span>1</span><h3>Open the app</h3><p>No sign-up needed right now. Everything runs in your browser.</p></div>
+      <div><span>2</span><h3>Ask in your own words</h3><p>Type or click. The AI handles analyst review that weighs the deterministic signals against tone and plausibility (JSON).</p></div>
+      <div><span>3</span><h3>Keep what you make</h3><p>Your work is saved in your browser and can be exported any time.</p></div>
+    </div>
+    <p class="l-note">Computed locally, with no AI involved: header parsing, link extraction, domain analysis, lexicon matching, scoring, highlighting.</p>
+  </section>
+
+  <section class="l-section reveal" id="faq">
+    <div class="l-head"><p class="l-kicker">Questions</p><h2>Good to know</h2></div>
+    <div class="l-faq">
+      <details><summary>Is it free?</summary><p>Yes. Every feature is free. </p></details>
+      <details><summary>Where is my data stored?</summary><p>What you create stays in this browser on this device. You can export a backup or delete everything from Settings.</p></details>
+      <details><summary>Do I need an API key?</summary><p>Not to try it: the app runs in demo mode with sample AI output. For live AI, connect a free Groq or OpenRouter key in Settings.</p></details>
+      <details><summary>What can I type into the AI box?</summary><p>Anything you would ask a helpful colleague who knows the app, such as: "Is this one safe to click?". It plans the steps, runs the app's own functions and tells you what it did. The Instructions tab saves preferences every AI feature follows.</p></details>
+      <details><summary>Can I see the code?</summary><p>Yes. It is open source under the MIT license on <a href="https://github.com/dguywhoknows/phishing-email-analyzer" rel="noopener">GitHub</a>, with a <a href="tests/">public test suite</a>.</p></details>
+    </div>
+  </section>
+
+  <section class="l-final reveal">
+    <h2>Is this email trying to hook you?</h2>
+    <a class="btn primary big" href="app.html">Open the app</a>
   </section>
 </main>
-</div>
-<div class="page" data-page="headers" data-title="Headers">
-<main class="stack">
-  <div class="card"><div class="row between"><h2 style="margin:0">Delivery path</h2><span class="small muted" id="hopSummary"></span></div><div id="hops"></div></div>
-  <div class="grid cols-2">
-    <div class="card"><h2>Authentication</h2><div id="authTable"></div></div>
-    <div class="card"><h2>Identity</h2><div id="identity"></div></div>
-  </div>
-  <div class="card"><h2>All headers</h2><div class="table-wrap" id="allHeaders" style="max-height:420px"></div></div>
-</main>
-</div>
 
-<div class="page" data-page="url" data-title="URL inspector">
-<main class="stack" style="max-width:980px">
-  <div class="card stack">
-    <div class="row"><input class="input grow mono" id="urlIn" placeholder="Paste a link to take apart, e.g. https://login.paypal.com.secure-check.xyz/?next=..." aria-label="URL"><button class="btn primary" id="urlGo">Inspect</button></div>
-    <div class="row small" id="urlSamples"><span class="muted">Try:</span></div>
-  </div>
-  <div id="urlOut"></div>
-</main>
-</div>
-
-<div class="page" data-page="training" data-title="Training">
-<main class="grid side">
-  <aside class="stack">
-    <div class="card stack"><h2 style="margin:0">Spot the phish</h2><p class="small muted" style="margin:0">Read each message and decide. You get the tell and the scanner's view after every answer.</p><div class="kpis" id="trainStats"></div><div class="row"><button class="btn" id="trainRestart">Restart</button><button class="btn ghost" id="trainGen">Generate a new one</button></div></div>
-    <div class="card"><h2>Your answers</h2><div id="trainLog" class="small"></div></div>
-  </aside>
-  <section class="stack" id="trainCard"></section>
-</main>
-</div>
-
-<div class="page" data-page="history" data-title="History">
-<main class="stack">
-  <div class="page-head"><div><h2>Scan history</h2><p id="histSummary"></p></div><div class="row"><button class="btn ghost" id="histCsv">Export CSV</button><button class="btn ghost danger" id="histClear">Clear</button></div></div>
-  <div class="card table-wrap" id="histTable"></div>
-  <div class="grid cols-2">
-    <div class="card stack"><h2 style="margin:0">Trusted domains</h2><p class="small muted" style="margin:0">Mail from these domains gets −20 unless SPF or DMARC fail.</p><form class="row" id="trustForm"><input class="input grow" id="trustIn" placeholder="example.com" aria-label="Trusted domain"><button class="btn" type="submit">Add</button></form><div id="trustList" class="row"></div></div>
-    <div class="card stack"><h2 style="margin:0">Blocked domains</h2><p class="small muted" style="margin:0">Mail or links from these domains get +40.</p><form class="row" id="blockForm"><input class="input grow" id="blockIn" placeholder="bad-domain.top" aria-label="Blocked domain"><button class="btn" type="submit">Add</button></form><div id="blockList" class="row"></div></div>
-  </div>
-</main>
-</div>
-
-<div class="page" data-page="settings" data-title="Settings"></div>
-<script src="src/lib/dom.js"></script>
-<script src="src/lib/ai.js"></script>
-<script src="src/lib/router.js"></script>
-<script src="src/core.js"></script>
-<script src="src/demo.js"></script>
-<script src="src/app.js"></script>
+<footer class="l-foot"><span>Phish Scope</span><span><a href="https://github.com/dguywhoknows/phishing-email-analyzer" rel="noopener">Source</a> · <a href="tests/">Tests</a> · MIT license</span></footer>
+<script>
+document.querySelectorAll('.reveal').forEach((el) => el.classList.add('pre'));
+const io = new IntersectionObserver((es) => es.forEach((x) => { if (x.isIntersecting) { x.target.classList.remove('pre'); io.unobserve(x.target); } }), { threshold: 0.12 });
+document.querySelectorAll('.reveal').forEach((el) => io.observe(el));
+</script>
 </body>
 </html>
